@@ -1,0 +1,26 @@
+/* ButtonEstimated.css */
+.btn-estimated {
+  background: linear-gradient(90deg, #ff8c00, #ffc107);
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.4rem;
+  font-size: 0.95rem;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: 0.25s ease;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-estimated:hover {
+  transform: translateY(-2px);
+  opacity: 0.92;
+  box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+}
+
+.btn-estimated:focus,
+.btn-estimated:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}

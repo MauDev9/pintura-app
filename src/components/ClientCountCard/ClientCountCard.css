@@ -1,0 +1,118 @@
+/* ClientCountCard.css */
+.client-count-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: 2px solid transparent;
+  opacity: 0;
+  transform: translateY(20px);
+  width: 100%;
+  max-width: 280px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.client-count-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s;
+}
+
+.client-count-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.client-count-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  border-color: #f39d33;
+}
+
+.client-count-card:hover::before {
+  left: 100%;
+}
+
+.client-count-card:active {
+  transform: translateY(-4px) scale(0.98);
+}
+
+.client-count-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.client-count-card:hover .client-count-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.client-count-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.client-count-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #141414;
+  line-height: 1;
+  background: linear-gradient(135deg, #f39d33 0%, #ffc107 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all 0.3s ease;
+}
+
+.client-count-card:hover .client-count-number {
+  transform: scale(1.05);
+}
+
+.client-count-label {
+  font-size: 0.875rem;
+  color: #666;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.client-count-card:hover .client-count-label {
+  color: #f39d33;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .client-count-card {
+    padding: 1.25rem;
+    max-width: 250px;
+    width: auto;
+  }
+
+  .client-count-icon {
+    font-size: 2rem;
+  }
+
+  .client-count-number {
+    font-size: 1.75rem;
+  }
+
+  .client-count-label {
+    font-size: 0.8rem;
+  }
+}
+
