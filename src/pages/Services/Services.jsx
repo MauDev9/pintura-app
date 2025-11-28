@@ -8,7 +8,7 @@ import "./Services.css";
 export default function Services() {
   const serviceAreas = [
     "Chicago", "Aurora", "Naperville", "Joliet", "Rockford", 
-    "Elgin", "Peoria", "Champaign", "Waukegan", "Cicero"
+    "Elgin", "Peoria", "Saint Charles", "Waukegan", "Cicero"
   ];
 
   return (
