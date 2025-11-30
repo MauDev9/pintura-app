@@ -1,39 +1,13 @@
-// Vercel Serverless Function to handle contact form submissions with Resend
-// Get API key from: https://resend.com/api-keys
-
+// Vercel Serverless Function to handle contact form submissions
 import { Resend } from 'resend';
 
 export default async function handler(req, res) {
-  // Check method first
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Initialize Resend inside the handler to ensure env vars are loaded
-  const apiKey = process.env.RESEND_API_KEY;
-  
-  if (!apiKey) {
-    console.error('RESEND_API_KEY is missing from environment variables');
-    return res.status(500).json({ 
-      error: 'Server configuration error: API key not found',
-      debug: 'Check Vercel environment variables'
-    });
-  }
-  
-  const resend = new Resend(apiKey);
-
   try {
-    // Debug: Log environment variables (don't log the full API key for security)
-    console.log('Environment check:', {
-      hasApiKey: !!process.env.RESEND_API_KEY,
-      apiKeyPrefix: process.env.RESEND_API_KEY ? process.env.RESEND_API_KEY.substring(0, 5) + '...' : 'MISSING',
-      toEmail: process.env.RESEND_TO_EMAIL || 'NOT SET',
-      fromEmail: process.env.RESEND_FROM_EMAIL || 'NOT SET'
-    });
-
     const { name, email, phone, message } = req.body;
-    
-    console.log('Form submission received:', { name, email, phone, messageLength: message?.length });
 
     // Validate required fields
     if (!name || !email || !phone || !message) {
@@ -48,20 +22,19 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid email format' });
     }
 
-    // Check if recipient email is set
-    const recipientEmail = process.env.RESEND_TO_EMAIL || 'dev.rusinque@gmail.com';
-    if (!recipientEmail || recipientEmail === 'your-email@example.com') {
-      console.error('RESEND_TO_EMAIL is not set correctly! Current value:', recipientEmail);
+    // Check environment variables
+    const apiKey = process.env.RESEND_API_KEY;
+    const recipientEmail = process.env.RESEND_TO_EMAIL;
+
+    if (!apiKey || !recipientEmail) {
+      console.error('Missing environment variables');
       return res.status(500).json({ 
-        error: 'Server configuration error: Recipient email not set',
-        debug: 'Check RESEND_TO_EMAIL in Vercel environment variables'
+        error: 'Server configuration error' 
       });
     }
 
-    console.log('Sending email to:', recipientEmail);
-    console.log('From email:', process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev');
-
-    // Send email using Resend
+    // Initialize Resend and send email
+    const resend = new Resend(apiKey);
     const emailResult = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
       to: recipientEmail,
@@ -129,24 +102,15 @@ Submitted at: ${new Date().toLocaleString()}
     });
 
     if (emailResult.error) {
-      console.error('❌ Resend error:', JSON.stringify(emailResult.error, null, 2));
+      console.error('Resend error:', emailResult.error);
       return res.status(500).json({ 
-        error: 'Failed to send email. Please try again later.',
-        details: emailResult.error,
-        debug: 'Check Resend dashboard for more info'
+        error: 'Failed to send email. Please try again later.' 
       });
     }
 
-    console.log('✅ Email sent successfully!');
-    console.log('Email ID:', emailResult.data?.id);
-    console.log('Sent to:', recipientEmail);
-    console.log('From:', process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev');
-
     return res.status(200).json({ 
       success: true,
-      message: 'Form submitted successfully. We will get back to you soon!',
-      emailId: emailResult.data?.id,
-      sentTo: recipientEmail
+      message: 'Form submitted successfully. We will get back to you soon!'
     });
 
   } catch (error) {
@@ -156,4 +120,3 @@ Submitted at: ${new Date().toLocaleString()}
     });
   }
 }
-

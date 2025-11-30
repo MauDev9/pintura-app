@@ -78,8 +78,6 @@ const ContactForm = ({
         await onSubmit(formData);
       } else {
         // Send form data to backend API
-        console.log('Sending form data:', formData);
-        
         const response = await fetch('/api/contact', {
           method: 'POST',
           headers: {
@@ -88,13 +86,9 @@ const ContactForm = ({
           body: JSON.stringify(formData),
         });
 
-        console.log('Response status:', response.status);
-        
         const data = await response.json();
-        console.log('Response data:', data);
 
         if (!response.ok) {
-          console.error('Form submission failed:', data);
           throw new Error(data.error || 'Failed to submit form');
         }
       }
@@ -114,10 +108,6 @@ const ContactForm = ({
     } catch (error) {
       setSubmitStatus("error");
       console.error("Form submission error:", error);
-      console.error("Error details:", {
-        message: error.message,
-        stack: error.stack
-      });
     } finally {
       setIsSubmitting(false);
     }
