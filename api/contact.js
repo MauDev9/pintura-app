@@ -3,9 +3,19 @@
 
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export default async function handler(req, res) {
+  // Initialize Resend inside the handler to ensure env vars are loaded
+  const apiKey = process.env.RESEND_API_KEY;
+  
+  if (!apiKey) {
+    console.error('RESEND_API_KEY is missing from environment variables');
+    return res.status(500).json({ 
+      error: 'Server configuration error: API key not found',
+      debug: 'Check Vercel environment variables'
+    });
+  }
+  
+  const resend = new Resend(apiKey);
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -36,24 +46,18 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid email format' });
     }
 
-    // Check if API key is set
-    if (!process.env.RESEND_API_KEY) {
-      console.error('RESEND_API_KEY is not set!');
-      return res.status(500).json({ 
-        error: 'Server configuration error. Please contact support.' 
-      });
-    }
-
     // Check if recipient email is set
     const recipientEmail = process.env.RESEND_TO_EMAIL || 'dev.rusinque@gmail.com';
     if (!recipientEmail || recipientEmail === 'your-email@example.com') {
-      console.error('RESEND_TO_EMAIL is not set correctly!');
+      console.error('RESEND_TO_EMAIL is not set correctly! Current value:', recipientEmail);
       return res.status(500).json({ 
-        error: 'Server configuration error. Please contact support.' 
+        error: 'Server configuration error: Recipient email not set',
+        debug: 'Check RESEND_TO_EMAIL in Vercel environment variables'
       });
     }
 
     console.log('Sending email to:', recipientEmail);
+    console.log('From email:', process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev');
 
     // Send email using Resend
     const emailResult = await resend.emails.send({
