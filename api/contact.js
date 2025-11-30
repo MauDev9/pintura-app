@@ -11,7 +11,17 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Debug: Log environment variables (don't log the full API key for security)
+    console.log('Environment check:', {
+      hasApiKey: !!process.env.RESEND_API_KEY,
+      apiKeyPrefix: process.env.RESEND_API_KEY ? process.env.RESEND_API_KEY.substring(0, 5) + '...' : 'MISSING',
+      toEmail: process.env.RESEND_TO_EMAIL || 'NOT SET',
+      fromEmail: process.env.RESEND_FROM_EMAIL || 'NOT SET'
+    });
+
     const { name, email, phone, message } = req.body;
+    
+    console.log('Form submission received:', { name, email, phone, messageLength: message?.length });
 
     // Validate required fields
     if (!name || !email || !phone || !message) {
@@ -26,10 +36,29 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid email format' });
     }
 
+    // Check if API key is set
+    if (!process.env.RESEND_API_KEY) {
+      console.error('RESEND_API_KEY is not set!');
+      return res.status(500).json({ 
+        error: 'Server configuration error. Please contact support.' 
+      });
+    }
+
+    // Check if recipient email is set
+    const recipientEmail = process.env.RESEND_TO_EMAIL || 'dev.rusinque@gmail.com';
+    if (!recipientEmail || recipientEmail === 'your-email@example.com') {
+      console.error('RESEND_TO_EMAIL is not set correctly!');
+      return res.status(500).json({ 
+        error: 'Server configuration error. Please contact support.' 
+      });
+    }
+
+    console.log('Sending email to:', recipientEmail);
+
     // Send email using Resend
     const emailResult = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
-      to: process.env.RESEND_TO_EMAIL || 'your-email@example.com',
+      to: recipientEmail,
       replyTo: email,
       subject: `New Contact Form Submission from ${name} - We Paint J&J`,
       html: `
@@ -96,9 +125,12 @@ Submitted at: ${new Date().toLocaleString()}
     if (emailResult.error) {
       console.error('Resend error:', emailResult.error);
       return res.status(500).json({ 
-        error: 'Failed to send email. Please try again later.' 
+        error: 'Failed to send email. Please try again later.',
+        details: emailResult.error 
       });
     }
+
+    console.log('Email sent successfully! ID:', emailResult.data?.id);
 
     return res.status(200).json({ 
       success: true,
