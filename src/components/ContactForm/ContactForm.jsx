@@ -77,10 +77,20 @@ const ContactForm = ({
       if (onSubmit) {
         await onSubmit(formData);
       } else {
-        // Default behavior - you can customize this
-        console.log("Form submitted:", formData);
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Send form data to backend API
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to submit form');
+        }
       }
       
       setSubmitStatus("success");
