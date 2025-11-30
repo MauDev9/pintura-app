@@ -4,6 +4,11 @@
 import { Resend } from 'resend';
 
 export default async function handler(req, res) {
+  // Check method first
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   // Initialize Resend inside the handler to ensure env vars are loaded
   const apiKey = process.env.RESEND_API_KEY;
   
@@ -16,9 +21,6 @@ export default async function handler(req, res) {
   }
   
   const resend = new Resend(apiKey);
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
 
   try {
     // Debug: Log environment variables (don't log the full API key for security)
