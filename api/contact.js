@@ -129,18 +129,24 @@ Submitted at: ${new Date().toLocaleString()}
     });
 
     if (emailResult.error) {
-      console.error('Resend error:', emailResult.error);
+      console.error('❌ Resend error:', JSON.stringify(emailResult.error, null, 2));
       return res.status(500).json({ 
         error: 'Failed to send email. Please try again later.',
-        details: emailResult.error 
+        details: emailResult.error,
+        debug: 'Check Resend dashboard for more info'
       });
     }
 
-    console.log('Email sent successfully! ID:', emailResult.data?.id);
+    console.log('✅ Email sent successfully!');
+    console.log('Email ID:', emailResult.data?.id);
+    console.log('Sent to:', recipientEmail);
+    console.log('From:', process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev');
 
     return res.status(200).json({ 
       success: true,
-      message: 'Form submitted successfully. We will get back to you soon!'
+      message: 'Form submitted successfully. We will get back to you soon!',
+      emailId: emailResult.data?.id,
+      sentTo: recipientEmail
     });
 
   } catch (error) {
