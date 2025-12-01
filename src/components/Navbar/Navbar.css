@@ -8,6 +8,22 @@
   font-weight: bold;
   font-size: 1.5rem;
   letter-spacing: 1px;
+  color: #7ca85b; /* Fallback color for browsers that don't support gradient text */
+  background: linear-gradient(135deg, #7ca85b, #6a9a4a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.navbar-brand:hover {
+  background: linear-gradient(135deg, #8cb86b, #7aaa5a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transform: scale(1.05);
+  text-decoration: none;
 }
 
 .nav-link {

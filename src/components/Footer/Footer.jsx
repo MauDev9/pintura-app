@@ -13,7 +13,7 @@ export default function Footer() {
         <div className="footer-content">
           {/* Company Info Section */}
           <div className="footer-section">
-            <h3 className="footer-logo">We Paint J&J</h3>
+            <h3 className="footer-logo">RenovaPro Painting LLC</h3>
             <p className="footer-description">
               Professional painting services you can trust. From interior touch-ups to complete exterior transformations, we bring quality and excellence to every project.
             </p>
@@ -131,7 +131,7 @@ export default function Footer() {
         <div className="footer-bottom">
           <div className="footer-bottom-content">
             <p className="copyright">
-              © {currentYear} We Paint J&J. All Rights Reserved.
+              © {currentYear} RenovaPro Painting LLC. All Rights Reserved.
             </p>
             <div className="footer-legal">
               <Link to="/privacy" className="legal-link">Privacy Policy</Link>

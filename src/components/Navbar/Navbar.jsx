@@ -28,7 +28,7 @@ export default function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">We Paint J&J</Link>
+        <Link className="navbar-brand" to="/">RenovaPro Painting LLC</Link>
 
         <button 
           className="navbar-toggler" 

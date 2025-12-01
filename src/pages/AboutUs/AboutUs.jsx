@@ -11,7 +11,7 @@ export default function AboutUs() {
       <section className="about-hero">
         <div className="about-hero-container">
           <div className="about-hero-content">
-            <h1 className="about-hero-title">About We Paint J&J</h1>
+            <h1 className="about-hero-title">About RenovaPro Painting LLC</h1>
             <p className="about-hero-subtitle">
               Your trusted partner for professional painting services. We bring quality, expertise, and dedication to every project.
             </p>
@@ -40,7 +40,7 @@ export default function AboutUs() {
             <div className="about-story-content">
               <h2 className="section-title">Our Story</h2>
               <p className="section-text">
-                We Paint J&J was founded with a simple mission: to provide exceptional painting services that transform spaces and exceed expectations. With years of experience in the industry, we've built a reputation for quality craftsmanship, attention to detail, and customer satisfaction.
+                RenovaPro Painting LLC was founded with a simple mission: to provide exceptional painting services that transform spaces and exceed expectations. With years of experience in the industry, we've built a reputation for quality craftsmanship, attention to detail, and customer satisfaction.
               </p>
               <p className="section-text">
                 Our team of skilled professionals brings passion and expertise to every project, whether it's a small interior touch-up or a complete exterior transformation. We believe that a fresh coat of paint can breathe new life into any space, and we're committed to making that transformation seamless and stress-free for our clients.
@@ -108,7 +108,7 @@ export default function AboutUs() {
         <div className="about-container">
           <div className="why-choose-wrapper">
             <div className="why-choose-content">
-              <h2 className="section-title">Why Choose We Paint J&J?</h2>
+              <h2 className="section-title">Why Choose RenovaPro Painting LLC?</h2>
               <div className="why-choose-list">
                 <div className="why-item">
                   <div className="why-icon">✓</div>
